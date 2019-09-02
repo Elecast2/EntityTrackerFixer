@@ -1,0 +1,6 @@
+name: EntityTrackerFixer
+main: net.minemora.entitytrackerfixer.EntityTrackerFixer
+version: 1.0.8
+api-version: 1.14
+author: Esmorall
+commands:
