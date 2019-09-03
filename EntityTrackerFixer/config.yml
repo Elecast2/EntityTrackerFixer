@@ -10,17 +10,17 @@ log-to-console: true
 
 #How many ticks between untrack process
 #The untrack process will check for untracked entities by players but still by the server, and untrack them.
-untrack-ticks: 1000
+untrack-ticks: 600
 
 #if tps are not below this value, the task will not perform the untrack and it will wait for the next run
 tps-limit: 18.5
 
 #frecuency in ticks to check untracked entities
 #It will check for players traking entities and will track it again (this is to prevent invisible entities)
-check-untracked-entities-frequency: 60
+check-untracked-entities-frequency: 40
 
 #Distance in blocks to check for players near untracked entities
-tracking-range: 25
+tracking-range: 30
 
 #which worlds do you want the plugin to take effect?
 worlds:
