@@ -42,8 +42,8 @@ public class UntrackerTask extends BukkitRunnable {
 		int removed = 0;
 		WorldServer ws = ((CraftWorld)Bukkit.getWorld(worldName)).getHandle();
 		ChunkProviderServer cps = ws.getChunkProvider();
-        @SuppressWarnings("rawtypes")
-        ObjectIterator objectiterator = cps.playerChunkMap.trackedEntities.values().iterator();
+
+        ObjectIterator<EntityTracker> objectiterator = cps.playerChunkMap.trackedEntities.values().iterator();
 		try {
 	        while (objectiterator.hasNext()) {
 	           Object iterobj = objectiterator.next();
