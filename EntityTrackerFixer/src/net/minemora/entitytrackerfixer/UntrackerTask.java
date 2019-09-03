@@ -1,8 +1,11 @@
 package net.minemora.entitytrackerfixer;
 
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.objects.ObjectIterator;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -39,21 +42,15 @@ public class UntrackerTask extends BukkitRunnable {
 			return;
 		}
 		//Set<net.minecraft.server.v1_14_R1.Entity> toRemove = new HashSet<>();
+		Set<Integer> toRemove = new HashSet<>();
 		int removed = 0;
 		WorldServer ws = ((CraftWorld)Bukkit.getWorld(worldName)).getHandle();
 		ChunkProviderServer cps = ws.getChunkProvider();
 
-        ObjectIterator<EntityTracker> objectiterator = cps.playerChunkMap.trackedEntities.values().iterator();
 		try {
-	        while (objectiterator.hasNext()) {
-	           Object iterobj = objectiterator.next();
-	           if(iterobj == null) {
-	        	   objectiterator.remove();
-	        	   continue;
-	           }
-	           EntityTracker et = (EntityTracker) iterobj;
-	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) 
-        			   ReflectionUtils.getPrivateField(et.getClass(), et, "tracker");
+			Field field = ReflectionUtils.getClassPrivateField(EntityTracker.class, "tracker");
+	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
+	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) field.get(et);
 	           if(nmsEnt instanceof EntityPlayer) {
         		   continue;
         	   }
@@ -80,14 +77,17 @@ public class UntrackerTask extends BukkitRunnable {
         	   }
 	           if(remove) {
 	        	   //System.out.println("untracked: " + nmsEnt.getBukkitEntity().getType().name());
-	        	   //toRemove.add(nmsEnt);
-	        	   objectiterator.remove();
+	        	   toRemove.add(nmsEnt.getId());
 	        	   removed++;
 	        	   UntrackedEntitiesCache.getInstance().add(nmsEnt);
 	           }
 	        }
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
+		}
+		
+		for(int id : toRemove) {
+			cps.playerChunkMap.trackedEntities.remove(id);
 		}
 		
 		/*

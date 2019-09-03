@@ -17,6 +17,13 @@ public final class ReflectionUtils {
  	    return ret;
     }
     
+    public static Field getClassPrivateField(Class<? extends Object> clazz, String fieldName) 
+    		throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    	Field field = clazz.getDeclaredField(fieldName);
+ 	    field.setAccessible(true);
+ 	    return field;
+    }
+    
     public static Object invokePrivateMethod(Class<? extends Object> clazz, Object obj, String methodName) 
     		throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
     	return invokePrivateMethod(clazz, obj, methodName, new Class[0]);
