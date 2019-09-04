@@ -3,6 +3,7 @@ package net.minemora.entitytrackerfixer;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -72,7 +73,14 @@ public class CheckTask extends BukkitRunnable {
 			}
 			boolean track = false;
 			int d = ConfigMain.getTrackingRange();
-			List<Entity> ents = nmsEnt.getBukkitEntity().getNearbyEntities(d, d, d);
+			
+			List<Entity> ents;
+			try {
+				ents = nmsEnt.getBukkitEntity().getNearbyEntities(d, d, d);
+			} catch (NoSuchElementException e) {
+				continue;
+			}
+			
 			if(ents.isEmpty()) {
 				continue;
 			}
