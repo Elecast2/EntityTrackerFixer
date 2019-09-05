@@ -10,33 +10,41 @@ import net.minemora.entitytrackerfixer.util.ReflectionUtils;
 
 public final class NMSEntityTracker {
 	
+	private static Method addEntityMethod;
+	private static Method removeEntityMethod;
+	
+	static {
+		try {
+		addEntityMethod = ReflectionUtils.getPrivateMethod(PlayerChunkMap.class, "addEntity", 
+				new Class[] {net.minecraft.server.v1_14_R1.Entity.class});
+		removeEntityMethod = ReflectionUtils.getPrivateMethod(PlayerChunkMap.class, "removeEntity", 
+				new Class[] {net.minecraft.server.v1_14_R1.Entity.class});
+		} catch (NoSuchMethodException | SecurityException | IllegalArgumentException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private NMSEntityTracker() {}
 	
 	public static void trackEntities(ChunkProviderServer cps, Set<net.minecraft.server.v1_14_R1.Entity> trackList) {
 		try {
-			Method method = ReflectionUtils.getPrivateMethod(PlayerChunkMap.class, "addEntity", 
-					new Class[] {net.minecraft.server.v1_14_R1.Entity.class});
 			for(net.minecraft.server.v1_14_R1.Entity entity : trackList) {
 				if(cps.playerChunkMap.trackedEntities.containsKey(entity.getId())) {
 					continue;
 				}
-				method.invoke(cps.playerChunkMap, entity);
+				addEntityMethod.invoke(cps.playerChunkMap, entity);
 			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+		} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static void untrackEntities(ChunkProviderServer cps, Set<net.minecraft.server.v1_14_R1.Entity> untrackList) {
 		try {
-			Method method = ReflectionUtils.getPrivateMethod(PlayerChunkMap.class, "removeEntity", 
-					new Class[] {net.minecraft.server.v1_14_R1.Entity.class});
 			for(net.minecraft.server.v1_14_R1.Entity entity : untrackList) {
-				method.invoke(cps.playerChunkMap, entity);
+				removeEntityMethod.invoke(cps.playerChunkMap, entity);
 			}
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
+		} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 	}
