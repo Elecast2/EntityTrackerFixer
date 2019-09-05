@@ -21,6 +21,16 @@ import net.minemora.entitytrackerfixer.util.Util;
 public class UntrackerTask extends BukkitRunnable {
 	
 	private static boolean running = false;
+	
+	private static Field trackerField;
+	
+	static {
+		try {
+			trackerField = ReflectionUtils.getClassPrivateField(EntityTracker.class, "tracker");
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -48,9 +58,8 @@ public class UntrackerTask extends BukkitRunnable {
 		ChunkProviderServer cps = ws.getChunkProvider();
 
 		try {
-			Field field = ReflectionUtils.getClassPrivateField(EntityTracker.class, "tracker");
 	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
-	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) field.get(et);
+	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) trackerField.get(et);
 	           if(nmsEnt instanceof EntityPlayer) {
         		   continue;
         	   }
@@ -82,7 +91,7 @@ public class UntrackerTask extends BukkitRunnable {
 	        	   UntrackedEntitiesCache.getInstance().add(nmsEnt);
 	           }
 	        }
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 		
