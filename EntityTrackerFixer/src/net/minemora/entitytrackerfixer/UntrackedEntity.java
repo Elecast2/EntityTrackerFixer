@@ -1,12 +1,16 @@
 package net.minemora.entitytrackerfixer;
 
+import java.util.UUID;
+
 public class UntrackedEntity {
 	
 	private final net.minecraft.server.v1_14_R1.Entity entity;
-	private final int id;
+	private final UUID uniqueID;
+	private int id;
 	
 	public UntrackedEntity(net.minecraft.server.v1_14_R1.Entity entity) {
 		this.entity = entity;
+		this.uniqueID = entity.getUniqueID();
 		this.id = entity.getId();
 	}
 	
@@ -14,7 +18,11 @@ public class UntrackedEntity {
 		return entity;
 	}
 
-	public int getId() {
+	public UUID getUniqueID() {
+		return uniqueID;
+	}
+	
+	private int getId() {
 		return id;
 	}
 	

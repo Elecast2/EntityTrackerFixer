@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -41,34 +42,35 @@ public class CheckTask extends BukkitRunnable {
 		WorldServer ws = ((CraftWorld)Bukkit.getWorld(worldName)).getHandle();
 		ChunkProviderServer cps = ws.getChunkProvider();
 		
-		Set<UntrackedEntity> toRemove = new HashSet<>();
+		Set<UUID> toRemove = new HashSet<>();
 		Set<net.minecraft.server.v1_14_R1.Entity> trackAgain = new HashSet<>();
 		
-        Iterator<UntrackedEntity> it = UntrackedEntitiesCache.getInstance().getCache(worldName).iterator();
+        Iterator<UntrackedEntity> it = UntrackedEntitiesCache.getInstance().getCache(worldName).values().iterator();
         while (it.hasNext()) {
         	UntrackedEntity ute = it.next();
         	net.minecraft.server.v1_14_R1.Entity nmsEnt = ute.getEntity();
+        	UUID uid = nmsEnt.getUniqueID();
         	if(cps.playerChunkMap.trackedEntities.containsKey(nmsEnt.getId())) {
         		//System.out.println("removed (et contains): " + nmsEnt.getBukkitEntity().getType().name());
-        		toRemove.add(ute);
+        		toRemove.add(uid);
 		    	continue;
 		    }
         	World world = nmsEnt.getBukkitEntity().getWorld();
 			Location loc = nmsEnt.getBukkitEntity().getLocation();
 			if(!Util.isChunkLoaded(ws, loc.getBlockX() >> 4, loc.getBlockZ() >> 4)) {
 				//System.out.println("removed (unloaded chunk x:"+(loc.getBlockX() >> 4)+" z:"+(loc.getBlockZ() >> 4)+"): " + nmsEnt.getBukkitEntity().getType().name());
-				UntrackedEntitiesCache.getInstance().addUFC(worldName, nmsEnt.getId());
-				toRemove.add(ute);
+				UntrackedEntitiesCache.getInstance().addUFC(worldName, uid);
+				toRemove.add(uid);
 				continue;
 			}
 			if(!worldName.equals(world.getName())) {
 				//System.out.println("removed (different world): " + nmsEnt.getBukkitEntity().getType().name());
-				toRemove.add(ute);
+				toRemove.add(uid);
 				continue;
 			}
 			if(nmsEnt.getBukkitEntity().isDead()) {
 				//System.out.println("removed (is dead): " + nmsEnt.getBukkitEntity().getType().name());
-				toRemove.add(ute);
+				toRemove.add(uid);
 				continue;
 			}
 			boolean track = false;
@@ -94,7 +96,6 @@ public class CheckTask extends BukkitRunnable {
 				}
 			}
 			if(track) {
-				//System.out.println("tracked again: " + nmsEnt.getBukkitEntity().getType().name());
 				trackAgain.add(nmsEnt);
 			}
         }

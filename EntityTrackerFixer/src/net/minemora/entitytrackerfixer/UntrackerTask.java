@@ -82,7 +82,7 @@ public class UntrackerTask extends BukkitRunnable {
 	           }
 	           Location loc = nmsEnt.getBukkitEntity().getLocation();
 	           if(!Util.isChunkLoaded(ws, loc.getBlockX() >> 4, loc.getBlockZ() >> 4)) {
-	        	   UntrackedEntitiesCache.getInstance().addUFC(worldName, nmsEnt.getId());
+	        	   UntrackedEntitiesCache.getInstance().addUFC(worldName, nmsEnt.getUniqueID());
         	   }
 	           if(remove) {
 	        	   //System.out.println("untracked: " + nmsEnt.getBukkitEntity().getType().name());
@@ -111,6 +111,8 @@ public class UntrackerTask extends BukkitRunnable {
         if(ConfigMain.isLogToConsole()) {
         	EntityTrackerFixer.plugin.getLogger().info("Untracked " + removed + " entities in " + worldName);
         }
+        
+        //System.out.println("cache now contains " + UntrackedEntitiesCache.getInstance().getCache(worldName).size() + " entities");
 	}
 	
 	public static boolean isRunning() {

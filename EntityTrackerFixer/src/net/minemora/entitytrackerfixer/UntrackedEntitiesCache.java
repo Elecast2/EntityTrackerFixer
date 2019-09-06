@@ -1,8 +1,10 @@
 package net.minemora.entitytrackerfixer;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minemora.entitytrackerfixer.config.ConfigMain;
@@ -37,7 +39,15 @@ public final class UntrackedEntitiesCache {
         tw.remove(ute);
 	}
 	
-	public void removeAll(Set<UntrackedEntity> toRemove, String worldName) {
+	public boolean contains(UUID uid, String worldName) {
+		if(!trackedWorlds.containsKey(worldName)) {
+			return false;
+		}
+		TrackedWorld tw = trackedWorlds.get(worldName);
+        return tw.contains(uid);
+	}
+	
+	public void removeAll(Set<UUID> toRemove, String worldName) {
 		if(!trackedWorlds.containsKey(worldName)) {
 			return;
 		}
@@ -52,40 +62,40 @@ public final class UntrackedEntitiesCache {
         return getCache(worldName).isEmpty();
 	}
 	
-	public Set<UntrackedEntity> getCache(String worldName) {
+	public Map<UUID,UntrackedEntity> getCache(String worldName) {
 		if(!trackedWorlds.containsKey(worldName)) {
-			return new HashSet<UntrackedEntity>();
+			return new HashMap<>();
 		}
 		TrackedWorld tw = trackedWorlds.get(worldName);
         return tw.getCache();
 	}
 	
-	public void addUFC(String worldName, int i) {
+	public void addUFC(String worldName, UUID uid) {
 		if(!trackedWorlds.containsKey(worldName)) {
 			return;
 		}
 		TrackedWorld tw = trackedWorlds.get(worldName);
-		tw.addUFC(i);
+		tw.addUFC(uid);
 	}
 	
-	public void removeUFC(String worldName, int i) {
+	public void removeUFC(String worldName, UUID uid) {
 		if(!trackedWorlds.containsKey(worldName)) {
 			return;
 		}
 		TrackedWorld tw = trackedWorlds.get(worldName);
-        tw.removeUFC(i);
+        tw.removeUFC(uid);
 	}
 	
-	public boolean containsUFC(String worldName, int i) {
+	public boolean containsUFC(String worldName, UUID uid) {
 		if(!trackedWorlds.containsKey(worldName)) {
-			return true;
+			return false;
 		}
-        return getUnloadedFromChunkCache(worldName).contains(i);
+        return getUnloadedFromChunkCache(worldName).contains(uid);
 	}
 	
-	public Set<Integer> getUnloadedFromChunkCache(String worldName) {
+	public Set<UUID> getUnloadedFromChunkCache(String worldName) {
 		if(!trackedWorlds.containsKey(worldName)) {
-			return new HashSet<Integer>();
+			return new HashSet<UUID>();
 		}
 		TrackedWorld tw = trackedWorlds.get(worldName);
         return tw.getUnloadedFromChunkCache();

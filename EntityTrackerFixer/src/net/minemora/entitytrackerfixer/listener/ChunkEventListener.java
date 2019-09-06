@@ -19,9 +19,9 @@ public class ChunkEventListener implements Listener {
 			return;
 		}
 		for(Entity entity : ch.getEntities()) {
-			if(UntrackedEntitiesCache.getInstance().containsUFC(ch.getWorld().getName(), entity.getEntityId())) {
+			if(UntrackedEntitiesCache.getInstance().containsUFC(ch.getWorld().getName(), entity.getUniqueId())) {
 				UntrackedEntitiesCache.getInstance().add(((CraftEntity)entity).getHandle());
-				UntrackedEntitiesCache.getInstance().removeUFC(ch.getWorld().getName(), entity.getEntityId());
+				UntrackedEntitiesCache.getInstance().removeUFC(ch.getWorld().getName(), entity.getUniqueId());
 			}
 		}
 	}
