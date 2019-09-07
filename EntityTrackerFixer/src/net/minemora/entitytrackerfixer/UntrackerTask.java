@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,7 +15,6 @@ import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
-import net.minemora.entitytrackerfixer.util.Util;
 
 public class UntrackerTask extends BukkitRunnable {
 	
@@ -80,15 +78,10 @@ public class UntrackerTask extends BukkitRunnable {
 	        		   continue;
 	        	   }
 	           }
-	           Location loc = nmsEnt.getBukkitEntity().getLocation();
-	           if(!Util.isChunkLoaded(ws, loc.getBlockX() >> 4, loc.getBlockZ() >> 4)) {
-	        	   UntrackedEntitiesCache.getInstance().addUFC(worldName, nmsEnt.getUniqueID());
-        	   }
 	           if(remove) {
 	        	   //System.out.println("untracked: " + nmsEnt.getBukkitEntity().getType().name());
 	        	   toRemove.add(nmsEnt.getId());
 	        	   removed++;
-	        	   UntrackedEntitiesCache.getInstance().add(nmsEnt);
 	           }
 	        }
 		} catch (IllegalArgumentException | IllegalAccessException e) {
