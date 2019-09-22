@@ -13,6 +13,6 @@ public class EntityTrackerFixer extends JavaPlugin {
 		plugin = this;
 		ConfigMain.getInstance().setup(this);
 		new UntrackerTask().runTaskTimer(this, ConfigMain.getUntrackTicks(), ConfigMain.getUntrackTicks());
-		new CheckTask().runTaskTimerAsynchronously(this, ConfigMain.getUntrackTicks() + 1, ConfigMain.getCheckFrequency());
+		new CheckTask().runTaskTimer(this, ConfigMain.getUntrackTicks() + 1, ConfigMain.getCheckFrequency());
 	}
 }

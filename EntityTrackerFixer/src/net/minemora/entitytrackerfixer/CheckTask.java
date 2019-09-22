@@ -43,13 +43,7 @@ public class CheckTask extends BukkitRunnable {
 				}
 			}
 		}
-
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				NMSEntityTracker.trackEntities(cps, trackAgain);
-			}
-		}.runTask(EntityTrackerFixer.plugin);
+		NMSEntityTracker.trackEntities(cps, trackAgain);
 	}
 
 }
