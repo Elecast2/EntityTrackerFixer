@@ -4,14 +4,11 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.minecraft.server.v1_14_R1.ChunkProviderServer;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
-import net.minecraft.server.v1_14_R1.MinecraftServer;
-import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
@@ -21,6 +18,7 @@ public class UntrackerTask extends BukkitRunnable {
 	private static boolean running = false;
 	
 	private static Field trackerField;
+	private static MinecraftServer server = MinecraftServer.getServer();
 	
 	static {
 		try {
@@ -33,7 +31,7 @@ public class UntrackerTask extends BukkitRunnable {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
-		if(MinecraftServer.getServer().recentTps[0] > ConfigMain.getMinTps()) {
+		if(getCurrentTPS() > ConfigMain.getMinTps()) {
 			//String tps = String.format("%.2f", MinecraftServer.getServer().recentTps[0]);
 			//EntityTrackerFixer.plugin.getLogger().info("Not untraking because tps = " + tps);
 			return;
@@ -112,4 +110,12 @@ public class UntrackerTask extends BukkitRunnable {
 		return running;
 	}
 
+	public double getCurrentTPS()
+	{
+		return Math.min(1000 / getCurrentDurationTime(), 20);
+	}
+
+	public static double getCurrentDurationTime() {
+		return MathHelper.a(server.f) * 1.0E-6D;
+	}
 }
