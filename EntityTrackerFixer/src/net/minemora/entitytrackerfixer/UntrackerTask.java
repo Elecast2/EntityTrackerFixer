@@ -14,6 +14,7 @@ import net.minecraft.server.v1_14_R1.MinecraftServer;
 import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
+import net.minemora.entitytrackerfixer.entitytick.EntityTickManager;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
 
 public class UntrackerTask extends BukkitRunnable {
@@ -90,6 +91,9 @@ public class UntrackerTask extends BukkitRunnable {
 		
 		for(int id : toRemove) {
 			cps.playerChunkMap.trackedEntities.remove(id);
+			if(ConfigMain.isDisableTickUntracked()) {
+				EntityTickManager.getInstance().disableTicking(id, worldName);
+			}
 		}
 		
 		/*

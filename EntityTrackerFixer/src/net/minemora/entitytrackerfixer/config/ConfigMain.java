@@ -14,6 +14,7 @@ public final class ConfigMain extends Config {
 	private static int trackingRange;
 	private static double minTps;
 	private static boolean logToConsole = true;
+	private static boolean disableTickUntracked = true;
 	private static List<String> worlds = new ArrayList<>();
 
 	private ConfigMain() {
@@ -28,6 +29,7 @@ public final class ConfigMain extends Config {
 		minTps = getConfig().getDouble("tps-limit", 18.5);
 		worlds = getConfig().getStringList("worlds");
 		logToConsole = getConfig().getBoolean("log-to-console", true);
+		disableTickUntracked = getConfig().getBoolean("disable-tick-for-untracked-entities", true);
 	}
 	
 	public static FileConfiguration get() {
@@ -68,5 +70,9 @@ public final class ConfigMain extends Config {
 
 	public static boolean isLogToConsole() {
 		return logToConsole;
+	}
+
+	public static boolean isDisableTickUntracked() {
+		return disableTickUntracked;
 	}
 }
