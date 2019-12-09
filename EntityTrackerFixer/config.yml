@@ -16,7 +16,7 @@ disable-tick-for-untracked-entities: true
 untrack-ticks: 400
 
 #if tps are not below this value, the task will not perform the untrack and it will wait for the next run
-tps-limit: 18.5
+tps-limit: 19.5
 
 #frecuency in ticks to check untracked entities
 #It will check for players traking entities and will track it again (this is to prevent invisible entities)

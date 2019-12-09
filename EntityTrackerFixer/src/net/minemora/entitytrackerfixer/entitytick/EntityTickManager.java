@@ -16,10 +16,12 @@ import net.minemora.entitytrackerfixer.util.ReflectionUtils;
 public class EntityTickManager  extends TimerTask {
 	
 	private static Field tickingField;
+	private static Field tickingEntitiesField;
 	
 	static {
 		try {
-			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
+			tickingEntitiesField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
+			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "ticking");
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
@@ -54,8 +56,7 @@ public class EntityTickManager  extends TimerTask {
 		for(String worldName : cache.keySet()) {
 			WorldServer ws = ((CraftWorld)Bukkit.getWorld(worldName)).getHandle();
 			try {
-				boolean ticking = tickingField.getBoolean(ws);
-				if(ticking) {
+				if(tickingEntitiesField.getBoolean(ws) || tickingField.getBoolean(ws)) {
 					//System.out.println("ticking");
 					continue;
 				}
