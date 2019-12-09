@@ -29,7 +29,7 @@ public final class ConfigMain extends Config {
 		minTps = getConfig().getDouble("tps-limit", 18.5);
 		worlds = getConfig().getStringList("worlds");
 		logToConsole = getConfig().getBoolean("log-to-console", true);
-		disableTickUntracked = getConfig().getBoolean("disable-tick-for-untracked-entities", true);
+		disableTickUntracked = getConfig().getBoolean("disable-tick-for-untracked-entities", false);
 	}
 	
 	public static FileConfiguration get() {
