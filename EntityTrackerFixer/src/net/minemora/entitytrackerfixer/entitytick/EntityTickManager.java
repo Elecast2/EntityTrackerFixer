@@ -66,7 +66,11 @@ public class EntityTickManager  extends TimerTask {
 				}
 				ewc.getToUntick().clear();
 				for(int i : ewc.getToTick().keySet()) {
-					ws.entitiesById.put(i, ewc.getToTick().get(i));
+					net.minecraft.server.v1_14_R1.Entity entity = ewc.getToTick().get(i);
+					if(entity == null) {
+						continue;
+					}
+					ws.entitiesById.put(i, entity);
 				}
 				ewc.getToTick().clear();
 			} catch (IllegalArgumentException | IllegalAccessException e) {
