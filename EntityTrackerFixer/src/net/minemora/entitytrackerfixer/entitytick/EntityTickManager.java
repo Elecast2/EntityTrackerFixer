@@ -19,7 +19,7 @@ public class EntityTickManager  extends TimerTask {
 	
 	static {
 		try {
-			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "ticking");
+			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
@@ -56,6 +56,7 @@ public class EntityTickManager  extends TimerTask {
 			try {
 				boolean ticking = tickingField.getBoolean(ws);
 				if(ticking) {
+					//System.out.println("ticking");
 					continue;
 				}
 				EntityTickWorldCache ewc = cache.get(worldName);
