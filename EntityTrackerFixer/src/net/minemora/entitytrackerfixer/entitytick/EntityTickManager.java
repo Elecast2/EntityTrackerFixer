@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
@@ -13,15 +14,17 @@ import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minemora.entitytrackerfixer.UntrackerTask;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
 
-public class EntityTickManager  extends TimerTask {
+public class EntityTickManager extends TimerTask {
 	
 	private static Field tickingField;
 	private static Field tickingEntitiesField;
+	private static Field entityCount;
 	
 	static {
 		try {
 			tickingEntitiesField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
 			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "ticking");
+			entityCount = ReflectionUtils.getClassPrivateField(net.minecraft.server.v1_14_R1.Entity.class, "entityCount");
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
@@ -71,7 +74,13 @@ public class EntityTickManager  extends TimerTask {
 					if(entity == null) {
 						continue;
 					}
-					ws.entitiesById.put(i, entity);
+					if(ws.entitiesById.containsKey(i)) {
+						int id = ((AtomicInteger)entityCount.get(null)).incrementAndGet();
+						ws.entitiesById.put(id, entity);
+					}
+					else {
+						ws.entitiesById.put(i, entity);
+					}
 				}
 				ewc.getToTick().clear();
 			} catch (IllegalArgumentException | IllegalAccessException e) {
