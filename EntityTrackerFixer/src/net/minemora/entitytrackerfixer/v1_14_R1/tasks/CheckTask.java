@@ -1,4 +1,4 @@
-package net.minemora.entitytrackerfixer;
+package net.minemora.entitytrackerfixer.v1_14_R1.tasks;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import net.minecraft.server.v1_14_R1.ChunkProviderServer;
 import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
-import net.minemora.entitytrackerfixer.entitytick.EntityTickManager;
+import net.minemora.entitytrackerfixer.v1_14_R1.NMSEntityTracker;
+import net.minemora.entitytrackerfixer.v1_14_R1.entityTick.EntityTickManager;
 
 public class CheckTask extends BukkitRunnable {
 

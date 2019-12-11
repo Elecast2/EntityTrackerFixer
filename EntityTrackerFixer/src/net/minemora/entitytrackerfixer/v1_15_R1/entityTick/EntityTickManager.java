@@ -1,4 +1,4 @@
-package net.minemora.entitytrackerfixer.entitytick;
+package net.minemora.entitytrackerfixer.v1_15_R1.entityTick;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -8,11 +8,11 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 
-import net.minecraft.server.v1_14_R1.WorldServer;
-import net.minemora.entitytrackerfixer.UntrackerTask;
+import net.minecraft.server.v1_15_R1.WorldServer;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
+import net.minemora.entitytrackerfixer.v1_15_R1.tasks.UntrackerTask;
 
 public class EntityTickManager extends TimerTask {
 	
@@ -24,7 +24,7 @@ public class EntityTickManager extends TimerTask {
 		try {
 			tickingEntitiesField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
 			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "ticking");
-			entityCount = ReflectionUtils.getClassPrivateField(net.minecraft.server.v1_14_R1.Entity.class, "entityCount");
+			entityCount = ReflectionUtils.getClassPrivateField(net.minecraft.server.v1_15_R1.Entity.class, "entityCount");
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +46,7 @@ public class EntityTickManager extends TimerTask {
     	cache.get(worldName).getToUntick().add(id);
     }
     
-    public void enableTicking(net.minecraft.server.v1_14_R1.Entity entity, String worldName) {
+    public void enableTicking(net.minecraft.server.v1_15_R1.Entity entity, String worldName) {
     	cache.get(worldName).getToUntick().remove(entity.getId());
     	cache.get(worldName).getToTick().put(entity.getId(), entity);
     }
@@ -70,7 +70,7 @@ public class EntityTickManager extends TimerTask {
 				}
 				ewc.getToUntick().clear();
 				for(int i : ewc.getToTick().keySet()) {
-					net.minecraft.server.v1_14_R1.Entity entity = ewc.getToTick().get(i);
+					net.minecraft.server.v1_15_R1.Entity entity = ewc.getToTick().get(i);
 					if(entity == null) {
 						continue;
 					}

@@ -1,11 +1,10 @@
 package net.minemora.entitytrackerfixer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import net.minemora.entitytrackerfixer.config.ConfigMain;
-import net.minemora.entitytrackerfixer.entitytick.EntityTickManager;
-import net.minemora.entitytrackerfixer.entitytick.EntityTickWorldCache;
+import net.minemora.entitytrackerfixer.nms.NMS;
+import net.minemora.entitytrackerfixer.nms.NMSCheck;
 
 public class EntityTrackerFixer extends JavaPlugin {
 	
@@ -15,15 +14,10 @@ public class EntityTrackerFixer extends JavaPlugin {
 	public void onEnable() {
 		plugin = this;
 		ConfigMain.getInstance().setup(this);
+		NMS nms = NMSCheck.getNMS(this);
 		if(ConfigMain.isDisableTickUntracked()) {
-			for(String worldName : ConfigMain.getWorlds()) {
-				if(Bukkit.getWorld(worldName) == null) {
-					continue;
-				}
-				EntityTickManager.getInstance().getCache().put(worldName, new EntityTickWorldCache(worldName));
-			}
+			nms.loadWorldCache();
 		}
-		new UntrackerTask().runTaskTimer(this, ConfigMain.getUntrackTicks(), ConfigMain.getUntrackTicks());
-		new CheckTask().runTaskTimer(this, ConfigMain.getUntrackTicks() + 1, ConfigMain.getCheckFrequency());
+		nms.startTasks(this);
 	}
 }

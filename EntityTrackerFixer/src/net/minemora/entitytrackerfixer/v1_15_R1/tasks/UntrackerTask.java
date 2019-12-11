@@ -1,21 +1,22 @@
-package net.minemora.entitytrackerfixer;
+package net.minemora.entitytrackerfixer.v1_15_R1.tasks;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.minecraft.server.v1_14_R1.ChunkProviderServer;
-import net.minecraft.server.v1_14_R1.EntityPlayer;
-import net.minecraft.server.v1_14_R1.MinecraftServer;
-import net.minecraft.server.v1_14_R1.WorldServer;
-import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
+import net.minecraft.server.v1_15_R1.ChunkProviderServer;
+import net.minecraft.server.v1_15_R1.EntityPlayer;
+import net.minecraft.server.v1_15_R1.MinecraftServer;
+import net.minecraft.server.v1_15_R1.WorldServer;
+import net.minecraft.server.v1_15_R1.PlayerChunkMap.EntityTracker;
+import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
-import net.minemora.entitytrackerfixer.entitytick.EntityTickManager;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
+import net.minemora.entitytrackerfixer.v1_15_R1.entityTick.EntityTickManager;
 
 public class UntrackerTask extends BukkitRunnable {
 	
@@ -58,7 +59,7 @@ public class UntrackerTask extends BukkitRunnable {
 
 		try {
 	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
-	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) trackerField.get(et);
+	           net.minecraft.server.v1_15_R1.Entity nmsEnt = (net.minecraft.server.v1_15_R1.Entity) trackerField.get(et);
 	           if(nmsEnt instanceof EntityPlayer) {
         		   continue;
         	   }

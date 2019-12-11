@@ -1,4 +1,4 @@
-package net.minemora.entitytrackerfixer.entitytick;
+package net.minemora.entitytrackerfixer.v1_15_R1.entityTick;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,7 +10,7 @@ public class EntityTickWorldCache {
 	private String worldName;
 	
 	private Set<Integer> toUntick = new HashSet<>();
-	private Map<Integer, net.minecraft.server.v1_14_R1.Entity> toTick = new HashMap<>();
+	private Map<Integer, net.minecraft.server.v1_15_R1.Entity> toTick = new HashMap<>();
 	
 	public EntityTickWorldCache(String worldName) {
 		this.worldName = worldName;
@@ -20,7 +20,7 @@ public class EntityTickWorldCache {
 		return toUntick;
 	}
 
-	public Map<Integer, net.minecraft.server.v1_14_R1.Entity> getToTick() {
+	public Map<Integer, net.minecraft.server.v1_15_R1.Entity> getToTick() {
 		return toTick;
 	}
 

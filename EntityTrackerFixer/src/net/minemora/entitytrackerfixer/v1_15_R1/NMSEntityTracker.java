@@ -1,11 +1,11 @@
-package net.minemora.entitytrackerfixer;
+package net.minemora.entitytrackerfixer.v1_15_R1;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-import net.minecraft.server.v1_14_R1.ChunkProviderServer;
-import net.minecraft.server.v1_14_R1.PlayerChunkMap;
+import net.minecraft.server.v1_15_R1.ChunkProviderServer;
+import net.minecraft.server.v1_15_R1.PlayerChunkMap;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
 
 public final class NMSEntityTracker {
@@ -16,9 +16,9 @@ public final class NMSEntityTracker {
 	static {
 		try {
 		addEntityMethod = ReflectionUtils.getPrivateMethod(PlayerChunkMap.class, "addEntity", 
-				new Class[] {net.minecraft.server.v1_14_R1.Entity.class});
+				new Class[] {net.minecraft.server.v1_15_R1.Entity.class});
 		removeEntityMethod = ReflectionUtils.getPrivateMethod(PlayerChunkMap.class, "removeEntity", 
-				new Class[] {net.minecraft.server.v1_14_R1.Entity.class});
+				new Class[] {net.minecraft.server.v1_15_R1.Entity.class});
 		} catch (NoSuchMethodException | SecurityException | IllegalArgumentException e) {
 			e.printStackTrace();
 		}
@@ -26,9 +26,9 @@ public final class NMSEntityTracker {
 	
 	private NMSEntityTracker() {}
 	
-	public static void trackEntities(ChunkProviderServer cps, Set<net.minecraft.server.v1_14_R1.Entity> trackList) {
+	public static void trackEntities(ChunkProviderServer cps, Set<net.minecraft.server.v1_15_R1.Entity> trackList) {
 		try {
-			for(net.minecraft.server.v1_14_R1.Entity entity : trackList) {
+			for(net.minecraft.server.v1_15_R1.Entity entity : trackList) {
 				if(cps.playerChunkMap.trackedEntities.containsKey(entity.getId())) {
 					continue;
 				}
@@ -39,9 +39,9 @@ public final class NMSEntityTracker {
 		}
 	}
 	
-	public static void untrackEntities(ChunkProviderServer cps, Set<net.minecraft.server.v1_14_R1.Entity> untrackList) {
+	public static void untrackEntities(ChunkProviderServer cps, Set<net.minecraft.server.v1_15_R1.Entity> untrackList) {
 		try {
-			for(net.minecraft.server.v1_14_R1.Entity entity : untrackList) {
+			for(net.minecraft.server.v1_15_R1.Entity entity : untrackList) {
 				removeEntityMethod.invoke(cps.playerChunkMap, entity);
 			}
 		} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
