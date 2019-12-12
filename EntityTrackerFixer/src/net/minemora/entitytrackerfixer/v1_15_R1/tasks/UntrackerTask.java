@@ -9,6 +9,7 @@ import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import net.minecraft.server.v1_15_R1.ChunkProviderServer;
+import net.minecraft.server.v1_15_R1.EntityEnderDragon;
 import net.minecraft.server.v1_15_R1.EntityPlayer;
 import net.minecraft.server.v1_15_R1.MinecraftServer;
 import net.minecraft.server.v1_15_R1.WorldServer;
@@ -61,6 +62,9 @@ public class UntrackerTask extends BukkitRunnable {
 	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
 	           net.minecraft.server.v1_15_R1.Entity nmsEnt = (net.minecraft.server.v1_15_R1.Entity) trackerField.get(et);
 	           if(nmsEnt instanceof EntityPlayer) {
+        		   continue;
+        	   }
+	           if(nmsEnt instanceof EntityEnderDragon) {
         		   continue;
         	   }
 	           if(nmsEnt.getBukkitEntity().getCustomName() != null) {
