@@ -3,6 +3,7 @@ main: net.minemora.entitytrackerfixer.EntityTrackerFixer
 version: 1.2.2
 api-version: 1.14
 author: Esmorall
+description: Untrack entities that are not used at all by the server.
 commands:
    etf:
       usage: /<command>
