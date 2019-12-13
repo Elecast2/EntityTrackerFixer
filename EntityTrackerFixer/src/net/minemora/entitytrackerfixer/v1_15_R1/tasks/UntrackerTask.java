@@ -37,8 +37,6 @@ public class UntrackerTask extends BukkitRunnable {
 	@Override
 	public void run() {
 		if(MinecraftServer.getServer().recentTps[0] > ConfigMain.getMinTps()) {
-			//String tps = String.format("%.2f", MinecraftServer.getServer().recentTps[0]);
-			//EntityTrackerFixer.plugin.getLogger().info("Not untraking because tps = " + tps);
 			return;
 		}
 		running = true;
@@ -97,15 +95,6 @@ public class UntrackerTask extends BukkitRunnable {
 				EntityTickManager.getInstance().disableTicking(id, worldName);
 			}
 		}
-		
-		/*
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				NMSEntityTracker.untrackEntities(cps, toRemove);
-			}
-		}.runTask(EntityTrackerFixer.plugin);
-		*/
 		
         if(ConfigMain.isLogToConsole()) {
         	EntityTrackerFixer.plugin.getLogger().info("Untracked " + removed + " entities in " + worldName);
