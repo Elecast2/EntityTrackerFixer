@@ -3,18 +3,19 @@ package net.minemora.entitytrackerfixer.v1_15_R1.entityTick;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import net.minecraft.server.v1_15_R1.WorldServer;
+import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
 import net.minemora.entitytrackerfixer.v1_15_R1.tasks.UntrackerTask;
 
-public class EntityTickManager extends TimerTask {
+public class EntityTickManager extends BukkitRunnable {
 	
 	private static Field tickingField;
 	private static Field tickingEntitiesField;
@@ -33,12 +34,9 @@ public class EntityTickManager extends TimerTask {
 	private static EntityTickManager instance;
 	
 	private Map<String, EntityTickWorldCache> cache = new HashMap<>();
-	
-	private Timer timer;
 
-    private EntityTickManager() {
-        this.timer = new Timer();
-        timer.schedule(this, 2069, 2069);
+    private EntityTickManager(Plugin plugin) {
+        this.runTaskTimer(plugin, 41, 41);
     }
     
     public void disableTicking(int id, String worldName) {
@@ -94,7 +92,7 @@ public class EntityTickManager extends TimerTask {
 	
 	public static EntityTickManager getInstance() {
 		if(instance == null) {
-			instance = new EntityTickManager();
+			instance = new EntityTickManager(EntityTrackerFixer.plugin);
 		}
 		return instance;
 	}
