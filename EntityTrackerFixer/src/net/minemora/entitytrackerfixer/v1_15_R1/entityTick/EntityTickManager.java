@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,14 +15,12 @@ import net.minemora.entitytrackerfixer.v1_15_R1.tasks.UntrackerTask;
 
 public class EntityTickManager extends BukkitRunnable {
 	
-	private static Field tickingField;
 	private static Field tickingEntitiesField;
 	private static Field entityCount;
 	
 	static {
 		try {
 			tickingEntitiesField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
-			tickingField = ReflectionUtils.getClassPrivateField(WorldServer.class, "ticking");
 			entityCount = ReflectionUtils.getClassPrivateField(net.minecraft.server.v1_15_R1.Entity.class, "entityCount");
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
@@ -36,7 +32,7 @@ public class EntityTickManager extends BukkitRunnable {
 	private Map<String, EntityTickWorldCache> cache = new HashMap<>();
 
     private EntityTickManager(Plugin plugin) {
-        this.runTaskTimer(plugin, 41, 41);
+        this.runTaskTimer(plugin, 61, 61);
     }
     
     public void disableTicking(int id, String worldName) {
@@ -55,13 +51,15 @@ public class EntityTickManager extends BukkitRunnable {
 			return;
 		}
 		for(String worldName : cache.keySet()) {
-			WorldServer ws = ((CraftWorld)Bukkit.getWorld(worldName)).getHandle();
+			EntityTickWorldCache ewc = cache.get(worldName);
+			WorldServer ws = ewc.getWorldServer();
+			if(ws.b()) {
+				continue;
+			}
 			try {
-				if(tickingEntitiesField.getBoolean(ws) || tickingField.getBoolean(ws)) {
-					//System.out.println("ticking");
+				if(tickingEntitiesField.getBoolean(ws)) {
 					continue;
 				}
-				EntityTickWorldCache ewc = cache.get(worldName);
 				//System.out.println("unticking: " + ewc.getToUntick().size() + " entities, ticking again: " + ewc.getToTick().size() + " entities");
 				for(int i : ewc.getToUntick()) {
 					ws.entitiesById.remove(i);

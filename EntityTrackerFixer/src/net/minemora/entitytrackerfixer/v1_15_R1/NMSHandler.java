@@ -1,6 +1,7 @@
 package net.minemora.entitytrackerfixer.v1_15_R1;
 
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.plugin.Plugin;
 
 import net.minemora.entitytrackerfixer.config.ConfigMain;
@@ -24,7 +25,8 @@ public class NMSHandler implements NMS {
 			if(Bukkit.getWorld(worldName) == null) {
 				continue;
 			}
-			EntityTickManager.getInstance().getCache().put(worldName, new EntityTickWorldCache(worldName));
+			EntityTickManager.getInstance().getCache().put(worldName, 
+					new EntityTickWorldCache(((CraftWorld)Bukkit.getWorld(worldName)).getHandle()));
 		}
 	}
 
