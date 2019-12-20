@@ -14,6 +14,7 @@ import net.minecraft.server.v1_14_R1.MinecraftServer;
 import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
 import net.minecraft.server.v1_14_R1.EntityEnderDragon;
+import net.minecraft.server.v1_14_R1.EntityItemFrame;
 import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
@@ -61,7 +62,7 @@ public class UntrackerTask extends BukkitRunnable {
 		try {
 	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
 	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) trackerField.get(et);
-	           if(nmsEnt instanceof EntityPlayer || nmsEnt instanceof EntityEnderDragon) {
+	           if(nmsEnt instanceof EntityPlayer || nmsEnt instanceof EntityItemFrame || nmsEnt instanceof EntityEnderDragon) {
         		   continue;
         	   }
 	           if(nmsEnt.getBukkitEntity().getCustomName() != null) {
