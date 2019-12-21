@@ -40,11 +40,9 @@ public class CheckTask extends BukkitRunnable {
 		int d = ConfigMain.getTrackingRange();
 		for(Player player : Bukkit.getWorld(worldName).getPlayers()) {
 			for(Entity ent : player.getNearbyEntities(d, d, d)) {
-				if(!cps.playerChunkMap.trackedEntities.containsKey(ent.getEntityId())) {
-					trackAgain.add(((CraftEntity)ent).getHandle());
-					if(ConfigMain.isDisableTickUntracked()) {
-						EntityTickManager.getInstance().enableTicking(((CraftEntity)ent).getHandle(), worldName);
-					}
+				trackAgain.add(((CraftEntity)ent).getHandle());
+				if(ConfigMain.isDisableTickUntracked()) {
+					EntityTickManager.getInstance().enableTicking(((CraftEntity)ent).getHandle(), worldName);
 				}
 			}
 		}
