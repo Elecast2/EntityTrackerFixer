@@ -70,6 +70,9 @@ public class EntityTickManager extends BukkitRunnable {
 					if(entity == null) {
 						continue;
 					}
+					if(!entity.valid) {
+						continue;
+					}
 					if(ws.entitiesById.containsValue(entity)) {
 						continue;
 					}
