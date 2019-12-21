@@ -13,6 +13,7 @@ import net.minecraft.server.v1_14_R1.EntityPlayer;
 import net.minecraft.server.v1_14_R1.MinecraftServer;
 import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
+import net.minecraft.server.v1_14_R1.EntityArmorStand;
 import net.minecraft.server.v1_14_R1.EntityEnderDragon;
 import net.minecraft.server.v1_14_R1.EntityItemFrame;
 import net.minemora.entitytrackerfixer.EntityTrackerFixer;
@@ -65,7 +66,7 @@ public class UntrackerTask extends BukkitRunnable {
 	           if(nmsEnt instanceof EntityPlayer || nmsEnt instanceof EntityItemFrame || nmsEnt instanceof EntityEnderDragon) {
         		   continue;
         	   }
-	           if(nmsEnt.getBukkitEntity().getCustomName() != null) {
+	           if(nmsEnt instanceof EntityArmorStand && nmsEnt.getBukkitEntity().getCustomName() != null) {
         		   continue;
         	   }
 	           boolean remove = false;
