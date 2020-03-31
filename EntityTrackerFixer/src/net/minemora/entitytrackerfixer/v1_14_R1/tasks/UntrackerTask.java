@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minemora.entitytrackerfixer.v1_14_R1.entityTick.EntityTickWorldCache;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -53,6 +54,14 @@ public class UntrackerTask extends BukkitRunnable {
 		if(Bukkit.getWorld(worldName) == null) {
 			return;
 		}
+
+		if(ConfigMain.isDisableTickUntracked()){
+			if(!EntityTickManager.getInstance().getCache().containsKey(worldName)){
+				EntityTickManager.getInstance().getCache().put(worldName,
+						new EntityTickWorldCache(((CraftWorld)Bukkit.getWorld(worldName)).getHandle()));
+			}
+		}
+
 		//Set<net.minecraft.server.v1_14_R1.Entity> toRemove = new HashSet<>();
 		Set<Integer> toRemove = new HashSet<>();
 		int removed = 0;
