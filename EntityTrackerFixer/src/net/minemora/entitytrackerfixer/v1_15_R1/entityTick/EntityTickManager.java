@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -36,11 +38,17 @@ public class EntityTickManager extends BukkitRunnable {
     }
     
     public void disableTicking(int id, String worldName) {
+    	if(!cache.containsKey(worldName)){
+			cache.put(worldName, new EntityTickWorldCache(((CraftWorld) Bukkit.getWorld(worldName)).getHandle()));
+		}
     	cache.get(worldName).getToTick().remove(id);
     	cache.get(worldName).getToUntick().add(id);
     }
     
     public void enableTicking(net.minecraft.server.v1_15_R1.Entity entity, String worldName) {
+		if(!cache.containsKey(worldName)){
+			cache.put(worldName, new EntityTickWorldCache(((CraftWorld) Bukkit.getWorld(worldName)).getHandle()));
+		}
     	cache.get(worldName).getToUntick().remove(entity.getId());
     	cache.get(worldName).getToTick().put(entity.getId(), entity);
     }

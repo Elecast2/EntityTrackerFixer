@@ -55,13 +55,6 @@ public class UntrackerTask extends BukkitRunnable {
 			return;
 		}
 
-		if(ConfigMain.isDisableTickUntracked()){
-			if(!EntityTickManager.getInstance().getCache().containsKey(worldName)){
-				EntityTickManager.getInstance().getCache().put(worldName,
-						new EntityTickWorldCache(((CraftWorld)Bukkit.getWorld(worldName)).getHandle()));
-			}
-		}
-
 		//Set<net.minecraft.server.v1_14_R1.Entity> toRemove = new HashSet<>();
 		Set<Integer> toRemove = new HashSet<>();
 		int removed = 0;

@@ -3,6 +3,7 @@ package net.minemora.entitytrackerfixer.v1_15_R1.tasks;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minemora.entitytrackerfixer.v1_15_R1.entityTick.EntityTickWorldCache;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
