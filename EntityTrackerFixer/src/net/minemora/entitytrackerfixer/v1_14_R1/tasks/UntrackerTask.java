@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.minemora.entitytrackerfixer.v1_14_R1.entityTick.EntityTickWorldCache;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,7 +14,6 @@ import net.minecraft.server.v1_14_R1.MinecraftServer;
 import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap.EntityTracker;
 import net.minecraft.server.v1_14_R1.EntityArmorStand;
-import net.minecraft.server.v1_14_R1.EntityEnderDragon;
 import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
@@ -64,9 +62,10 @@ public class UntrackerTask extends BukkitRunnable {
 		try {
 	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
 	           net.minecraft.server.v1_14_R1.Entity nmsEnt = (net.minecraft.server.v1_14_R1.Entity) trackerField.get(et);
-	           if(nmsEnt instanceof EntityPlayer || nmsEnt instanceof EntityEnderDragon) {
-        		   continue;
-        	   }
+	           if(nmsEnt instanceof EntityPlayer ||
+					   ConfigMain.getBlacklistedEntities().contains(nmsEnt.getBukkitEntity().getType())) {
+	           		continue;
+	           }
 	           if(nmsEnt instanceof EntityArmorStand && nmsEnt.getBukkitEntity().getCustomName() != null) {
         		   continue;
         	   }
