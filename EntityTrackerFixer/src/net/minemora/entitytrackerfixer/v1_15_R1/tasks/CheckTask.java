@@ -3,6 +3,7 @@ package net.minemora.entitytrackerfixer.v1_15_R1.tasks;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.minecraft.server.v1_15_R1.EntityPlayer;
 import net.minemora.entitytrackerfixer.v1_15_R1.entityTick.EntityTickWorldCache;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
@@ -41,6 +42,13 @@ public class CheckTask extends BukkitRunnable {
 		int d = ConfigMain.getTrackingRange();
 		for(Player player : Bukkit.getWorld(worldName).getPlayers()) {
 			for(Entity ent : player.getNearbyEntities(d, d, d)) {
+				net.minecraft.server.v1_15_R1.Entity cf = ((CraftEntity)ent).getHandle();
+				if (!cf.valid || cf.world != cps.getWorld()) {
+					continue;
+				}
+				if(cf instanceof EntityPlayer){
+					continue;
+				}
 				trackAgain.add(((CraftEntity)ent).getHandle());
 				if(ConfigMain.isDisableTickUntracked()) {
 					EntityTickManager.getInstance().enableTicking(((CraftEntity)ent).getHandle(), worldName);
