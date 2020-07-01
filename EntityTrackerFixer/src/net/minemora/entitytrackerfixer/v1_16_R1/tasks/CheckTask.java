@@ -40,13 +40,17 @@ public class CheckTask extends BukkitRunnable {
 		int d = ConfigMain.getTrackingRange();
 		for(Player player : Bukkit.getWorld(worldName).getPlayers()) {
 			for(Entity ent : player.getNearbyEntities(d, d, d)) {
-				trackAgain.add(((CraftEntity)ent).getHandle());
-				if(ConfigMain.isDisableTickUntracked()) {
-					EntityTickManager.getInstance().enableTicking(((CraftEntity)ent).getHandle(), worldName);
+				net.minecraft.server.v1_16_R1.Entity nms = ((CraftEntity)ent).getHandle();
+				if(cps.playerChunkMap.trackedEntities.containsKey(nms.getId())) {
+					continue;
 				}
+				trackAgain.add(nms);
 			}
 		}
 		NMSEntityTracker.trackEntities(cps, trackAgain);
+		if(ConfigMain.isDisableTickUntracked()) {
+			EntityTickManager.getInstance().enableTicking(trackAgain);
+		}
 	}
 
 }

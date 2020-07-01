@@ -15,9 +15,6 @@ public class EntityTrackerFixer extends JavaPlugin {
 		plugin = this;
 		ConfigMain.getInstance().setup(this);
 		NMS nms = NMSCheck.getNMS(this);
-		if(ConfigMain.isDisableTickUntracked()) {
-			nms.loadWorldCache();
-		}
 		nms.startTasks(this);
 	}
 }

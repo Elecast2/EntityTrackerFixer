@@ -94,7 +94,7 @@ public class UntrackerTask extends BukkitRunnable {
 		for(int id : toRemove) {
 			cps.playerChunkMap.trackedEntities.remove(id);
 			if(ConfigMain.isDisableTickUntracked()) {
-				EntityTickManager.getInstance().disableTicking(id, worldName);
+				EntityTickManager.getInstance().disableTicking(ws.entitiesById.get(id));
 			}
 		}
 		

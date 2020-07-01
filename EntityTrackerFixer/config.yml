@@ -9,7 +9,7 @@
 log-to-console: true
 
 #disable tick for untracked entities (experimental, use at your own risk)
-disable-tick-for-untracked-entities: false
+disable-tick-for-untracked-entities: true
 
 #How many ticks between untrack process
 #The untrack process will check for untracked entities by players but still by the server, and untrack them.

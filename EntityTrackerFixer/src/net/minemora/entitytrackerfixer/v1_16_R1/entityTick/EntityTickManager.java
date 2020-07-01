@@ -1,105 +1,51 @@
 package net.minemora.entitytrackerfixer.v1_16_R1.entityTick;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Set;
 
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import net.minecraft.server.v1_16_R1.EntityInsentient;
+import net.minecraft.server.v1_16_R1.MinecraftServer;
 
-import net.minecraft.server.v1_16_R1.WorldServer;
-import net.minemora.entitytrackerfixer.EntityTrackerFixer;
-import net.minemora.entitytrackerfixer.util.ReflectionUtils;
-import net.minemora.entitytrackerfixer.v1_16_R1.tasks.UntrackerTask;
-
-public class EntityTickManager extends BukkitRunnable {
-	
-	private static Field tickingEntitiesField;
-	private static Field entityCount;
-	
-	static {
-		try {
-			tickingEntitiesField = ReflectionUtils.getClassPrivateField(WorldServer.class, "tickingEntities");
-			entityCount = ReflectionUtils.getClassPrivateField(net.minecraft.server.v1_16_R1.Entity.class, "entityCount");
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
+public class EntityTickManager {
 	
 	private static EntityTickManager instance;
 	
-	private Map<String, EntityTickWorldCache> cache = new HashMap<>();
-
-    private EntityTickManager(Plugin plugin) {
-        this.runTaskTimer(plugin, 61, 61);
-    }
+	private EntityTickManager() {}
     
-    public void disableTicking(int id, String worldName) {
-    	cache.get(worldName).getToTick().remove(id);
-    	cache.get(worldName).getToUntick().add(id);
-    }
-    
-    public void enableTicking(net.minecraft.server.v1_16_R1.Entity entity, String worldName) {
-    	cache.get(worldName).getToUntick().remove(entity.getId());
-    	cache.get(worldName).getToTick().put(entity.getId(), entity);
-    }
-
-	@Override
-	public void run() {
-		if(UntrackerTask.isRunning()) {
+    public void disableTicking(net.minecraft.server.v1_16_R1.Entity entity) {
+    	if(entity == null) {
 			return;
 		}
-		for(String worldName : cache.keySet()) {
-			EntityTickWorldCache ewc = cache.get(worldName);
-			WorldServer ws = ewc.getWorldServer();
-			if(ws.m_()) {
-				continue;
-			}
-			try {
-				if(tickingEntitiesField.getBoolean(ws)) {
-					continue;
-				}
-				//System.out.println("unticking: " + ewc.getToUntick().size() + " entities, ticking again: " + ewc.getToTick().size() + " entities");
-				for(int i : ewc.getToUntick()) {
-					ws.entitiesById.remove(i);
-				}
-				ewc.getToUntick().clear();
-				for(int i : ewc.getToTick().keySet()) {
-					net.minecraft.server.v1_16_R1.Entity entity = ewc.getToTick().get(i);
-					if(entity == null) {
-						continue;
-					}
-					if(!entity.valid) {
-						continue;
-					}
-					if(ws.entitiesById.containsValue(entity)) {
-						continue;
-					}
-					if(ws.entitiesById.containsKey(i)) {
-						int id = ((AtomicInteger)entityCount.get(null)).incrementAndGet();
-						ws.entitiesById.put(id, entity);
-					}
-					else {
-						ws.entitiesById.put(i, entity);
-					}
-				}
-				ewc.getToTick().clear();
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}	
-	}
+		if(!entity.valid) {
+			return;
+		}
+    	entity.activatedTick = -2147483648L;
+    	if(entity instanceof EntityInsentient) {
+    		//System.out.println("disable tick for insentient entity currently aware is = " + ((EntityInsentient)entity).aware + " should be true");
+    		((EntityInsentient)entity).aware = false;
+    	}
+    }
+    
+    public void enableTicking(Set<net.minecraft.server.v1_16_R1.Entity> entities) {
+    	for(net.minecraft.server.v1_16_R1.Entity entity : entities) {
+    		if(entity == null) {
+    			continue;
+    		}
+    		if(!entity.valid) {
+    			continue;
+    		}
+        	entity.activatedTick = MinecraftServer.currentTick;
+        	if(entity instanceof EntityInsentient) {
+        		//System.out.println("enabling tick for insentient entity currently aware is = " + ((EntityInsentient)entity).aware + " should be false");
+        		((EntityInsentient)entity).aware = true;
+        	}
+    	}
+    }
 	
 	public static EntityTickManager getInstance() {
 		if(instance == null) {
-			instance = new EntityTickManager(EntityTrackerFixer.plugin);
+			instance = new EntityTickManager();
 		}
 		return instance;
-	}
-	
-	public Map<String, EntityTickWorldCache> getCache() {
-		return cache;
 	}
 
 }

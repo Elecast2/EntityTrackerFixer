@@ -14,7 +14,6 @@ import net.minecraft.server.v1_14_R1.ChunkProviderServer;
 import net.minecraft.server.v1_14_R1.WorldServer;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
 import net.minemora.entitytrackerfixer.v1_14_R1.NMSEntityTracker;
-import net.minemora.entitytrackerfixer.v1_14_R1.entityTick.EntityTickManager;
 
 public class CheckTask extends BukkitRunnable {
 
@@ -41,9 +40,6 @@ public class CheckTask extends BukkitRunnable {
 		for(Player player : Bukkit.getWorld(worldName).getPlayers()) {
 			for(Entity ent : player.getNearbyEntities(d, d, d)) {
 				trackAgain.add(((CraftEntity)ent).getHandle());
-				if(ConfigMain.isDisableTickUntracked()) {
-					EntityTickManager.getInstance().enableTicking(((CraftEntity)ent).getHandle(), worldName);
-				}
 			}
 		}
 		NMSEntityTracker.trackEntities(cps, trackAgain);
