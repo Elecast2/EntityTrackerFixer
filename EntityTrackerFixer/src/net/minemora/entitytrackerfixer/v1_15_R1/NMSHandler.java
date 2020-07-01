@@ -1,7 +1,5 @@
 package net.minemora.entitytrackerfixer.v1_15_R1;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
 import org.bukkit.plugin.Plugin;
 
 import net.minemora.entitytrackerfixer.config.ConfigMain;
