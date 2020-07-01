@@ -8,7 +8,7 @@
 #Log when the plugin untrack entities
 log-to-console: true
 
-#disable tick for untracked entities (experimental, use at your own risk)
+#disable tick for untracked entities (experimental) thio option only works for +1.16.1 servers
 disable-tick-for-untracked-entities: true
 
 #How many ticks between untrack process

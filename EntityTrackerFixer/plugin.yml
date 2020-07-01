@@ -1,6 +1,6 @@
 name: EntityTrackerFixer
 main: net.minemora.entitytrackerfixer.EntityTrackerFixer
-version: 1.2.4
+version: 1.2.5
 api-version: 1.16
 author: Esmorall
 description: Untrack entities that are not used at all by the server.
