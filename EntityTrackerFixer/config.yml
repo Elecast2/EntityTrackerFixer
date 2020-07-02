@@ -1,31 +1,40 @@
-#----------------------------------
-#       EntityTrackerFixer
+#-----------------------------------------------
+#              EntityTrackerFixer
 #
-#         By: Esmorall
+#                By: Esmorall
 #
-#----------------------------------
+#    English of this file improved by ArtelGG
+#-----------------------------------------------
 
-#Log when the plugin untrack entities
+# Should we notify the console when we interact with entities?
+# - Default value(s): true
 log-to-console: true
 
-#disable tick for untracked entities (experimental) thio option only works for +1.16.1 servers
+# Should we disable tick operations of un-tracked entities?
+# Note 1: this option only works for +1.16.1 servers
+# Note 2: this option is experimental and could contain errors
+# - Default value(s): true
 disable-tick-for-untracked-entities: true
 
-#How many ticks between untrack process
-#The untrack process will check for untracked entities by players but still by the server, and untrack them.
+# How often (in ticks) should we check for "lingering" entities?
+# - Default value(s): 400
 untrack-ticks: 400
 
-#if tps are not below this value, the task will not perform the untrack and it will wait for the next run
+# How low should the server's TPS be before we do anything?
+# - Note: Setting this value above 20 will skip this check, allowing the tasks to run 24/7.
+# - Default value(s): 19.5
 tps-limit: 19.5
 
-#frecuency in ticks to check untracked entities
-#It will check for players traking entities and will track it again (this is to prevent invisible entities)
+# How often (in ticks) should we check for players near un-tracked entities?
+# - Default value(s): 40
 check-untracked-entities-frequency: 40
 
-#Distance in blocks to check for players near untracked entities
+# How far (in blocks) should we look for players near un-tracked entities?
+# - Default value(s): 30
 tracking-range: 30
 
-#which worlds do you want the plugin to take effect?
+# What worlds should we perform our tasks on?
+# - Default value(s): [world, world_nether, world_the_end]
 worlds:
   - world
   - world_nether
