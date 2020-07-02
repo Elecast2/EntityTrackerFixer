@@ -95,7 +95,9 @@ public class UntrackerTask extends BukkitRunnable {
 		}
 		
         if(ConfigMain.isLogToConsole()) {
-        	EntityTrackerFixer.plugin.getLogger().info("Untracked " + removed + " entities in " + worldName);
+        	if(removed > 0) {
+        		EntityTrackerFixer.plugin.getLogger().info("Untracked " + removed + " entities in " + worldName);
+        	}
         }
         
         //System.out.println("cache now contains " + UntrackedEntitiesCache.getInstance().getCache(worldName).size() + " entities");
