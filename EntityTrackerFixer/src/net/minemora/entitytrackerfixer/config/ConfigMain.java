@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
+import net.minemora.entitytrackerfixer.EntityTrackerFixer;
+
 public final class ConfigMain extends Config {
 	
 	private static ConfigMain instance;
@@ -24,12 +26,21 @@ public final class ConfigMain extends Config {
 	@Override
 	public void load(boolean firstCreate) {
 		untrackTicks = getConfig().getInt("untrack-ticks", 1000);
+		EntityTrackerFixer.plugin.getLogger().info("Setting untrack ticks to: " + untrackTicks);
 		checkFrequency = getConfig().getInt("check-untracked-entities-frequency", 60);
+		EntityTrackerFixer.plugin.getLogger().info("Setting check frequency to: " + checkFrequency);
 		trackingRange = getConfig().getInt("tracking-range", 25);
+		EntityTrackerFixer.plugin.getLogger().info("Setting tracking range to: " + trackingRange);
 		minTps = getConfig().getDouble("tps-limit", 18.5);
+		EntityTrackerFixer.plugin.getLogger().info("Setting minmun TPS to: " + minTps);
 		worlds = getConfig().getStringList("worlds");
+		for(String world : worlds) {
+			EntityTrackerFixer.plugin.getLogger().info("Adding world: " + world);
+		}
 		logToConsole = getConfig().getBoolean("log-to-console", true);
+		EntityTrackerFixer.plugin.getLogger().info("Setting log to console to: " + logToConsole);
 		disableTickUntracked = getConfig().getBoolean("disable-tick-for-untracked-entities", true);
+		EntityTrackerFixer.plugin.getLogger().info("Setting disable tick for untracked to: " + disableTickUntracked);
 	}
 	
 	public static FileConfiguration get() {
