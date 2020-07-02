@@ -38,8 +38,6 @@ public class UntrackerTask extends BukkitRunnable {
 	@Override
 	public void run() {
 		if(MinecraftServer.getServer().recentTps[0] > ConfigMain.getMinTps()) {
-			//String tps = String.format("%.2f", MinecraftServer.getServer().recentTps[0]);
-			//EntityTrackerFixer.plugin.getLogger().info("Not untraking because tps = " + tps);
 			return;
 		}
 		running = true;

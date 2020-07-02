@@ -44,6 +44,9 @@ public class CheckTask extends BukkitRunnable {
 				if(cps.playerChunkMap.trackedEntities.containsKey(nms.getId())) {
 					continue;
 				}
+				if(!nms.valid) {
+					continue;
+				}
 				trackAgain.add(nms);
 			}
 		}
