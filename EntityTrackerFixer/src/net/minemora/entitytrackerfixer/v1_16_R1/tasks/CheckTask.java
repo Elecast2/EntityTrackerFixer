@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
@@ -23,11 +24,18 @@ public class CheckTask extends BukkitRunnable {
 		if(UntrackerTask.isRunning()) {
 			return;
 		}
-		for(String worldName : ConfigMain.getWorlds()) {
-			if(Bukkit.getWorld(worldName) == null) {
-				continue;
+		if(ConfigMain.isEnableOnAllWorlds()) {
+			for(World world : Bukkit.getWorlds()) {
+				checkWorld(world.getName());
 			}
-			checkWorld(worldName);
+		}
+		else {
+			for(String worldName : ConfigMain.getWorlds()) {
+				if(Bukkit.getWorld(worldName) == null) {
+					continue;
+				}
+				checkWorld(worldName);
+			}
 		}
 	}
 	

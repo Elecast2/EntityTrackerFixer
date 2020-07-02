@@ -17,6 +17,7 @@ public final class ConfigMain extends Config {
 	private static double minTps;
 	private static boolean logToConsole = true;
 	private static boolean disableTickUntracked = true;
+	private static boolean enableOnAllWorlds = false;
 	private static List<String> worlds = new ArrayList<>();
 
 	private ConfigMain() {
@@ -33,9 +34,13 @@ public final class ConfigMain extends Config {
 		EntityTrackerFixer.plugin.getLogger().info("Setting tracking range to: " + trackingRange);
 		minTps = getConfig().getDouble("tps-limit", 18.5);
 		EntityTrackerFixer.plugin.getLogger().info("Setting minmun TPS to: " + minTps);
+		enableOnAllWorlds = getConfig().getBoolean("enable-on-all-worlds", false);
+		EntityTrackerFixer.plugin.getLogger().info("Setting enable on all worlds to: " + enableOnAllWorlds);
 		worlds = getConfig().getStringList("worlds");
-		for(String world : worlds) {
-			EntityTrackerFixer.plugin.getLogger().info("Adding world: " + world);
+		if(!enableOnAllWorlds) {
+			for(String world : worlds) {
+				EntityTrackerFixer.plugin.getLogger().info("Adding world: " + world);
+			}
 		}
 		logToConsole = getConfig().getBoolean("log-to-console", true);
 		EntityTrackerFixer.plugin.getLogger().info("Setting log to console to: " + logToConsole);
@@ -85,5 +90,9 @@ public final class ConfigMain extends Config {
 
 	public static boolean isDisableTickUntracked() {
 		return disableTickUntracked;
+	}
+
+	public static boolean isEnableOnAllWorlds() {
+		return enableOnAllWorlds;
 	}
 }

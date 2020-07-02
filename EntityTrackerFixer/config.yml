@@ -16,6 +16,11 @@ log-to-console: true
 # - Default value(s): true
 disable-tick-for-untracked-entities: true
 
+# Should the plugin perform tasks on all worlds?
+# Note: if this is set to true, the option "worlds" will be ignored
+# - Default value(s): false
+enable-on-all-worlds: false
+
 # How often (in ticks) should we check for "lingering" entities?
 # - Default value(s): 400
 untrack-ticks: 400
