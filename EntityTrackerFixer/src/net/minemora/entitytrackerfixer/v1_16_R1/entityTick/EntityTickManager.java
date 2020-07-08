@@ -2,14 +2,23 @@ package net.minemora.entitytrackerfixer.v1_16_R1.entityTick;
 
 import java.util.Set;
 
+import org.bukkit.craftbukkit.v1_16_R1.entity.CraftEntity;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkLoadEvent;
+
 import net.minecraft.server.v1_16_R1.EntityInsentient;
 import net.minecraft.server.v1_16_R1.MinecraftServer;
+import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 
-public class EntityTickManager {
+public class EntityTickManager implements Listener {
 	
 	private static EntityTickManager instance;
 	
-	private EntityTickManager() {}
+	private EntityTickManager() {
+		EntityTrackerFixer.plugin.getServer().getPluginManager().registerEvents(this, EntityTrackerFixer.plugin);
+	}
     
     public void disableTicking(net.minecraft.server.v1_16_R1.Entity entity) {
     	if(entity == null) {
@@ -38,6 +47,18 @@ public class EntityTickManager {
         		//System.out.println("enabling tick for insentient entity currently aware is = " + ((EntityInsentient)entity).aware + " should be false");
         		((EntityInsentient)entity).aware = true;
         	}
+    	}
+    }
+    
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+    	for(Entity entity : event.getChunk().getEntities()) {
+    		net.minecraft.server.v1_16_R1.Entity nms = ((CraftEntity)entity).getHandle();
+    		if(nms instanceof EntityInsentient) {
+    			if(!((EntityInsentient)nms).aware) {
+    				((EntityInsentient)nms).aware = true;
+    			}
+    		}
     	}
     }
 	

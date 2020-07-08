@@ -33,7 +33,7 @@ public final class ConfigMain extends Config {
 		trackingRange = getConfig().getInt("tracking-range", 25);
 		EntityTrackerFixer.plugin.getLogger().info("Setting tracking range to: " + trackingRange);
 		minTps = getConfig().getDouble("tps-limit", 18.5);
-		EntityTrackerFixer.plugin.getLogger().info("Setting minmun TPS to: " + minTps);
+		EntityTrackerFixer.plugin.getLogger().info("Setting minimun TPS to: " + minTps);
 		enableOnAllWorlds = getConfig().getBoolean("enable-on-all-worlds", false);
 		EntityTrackerFixer.plugin.getLogger().info("Setting enable on all worlds to: " + enableOnAllWorlds);
 		worlds = getConfig().getStringList("worlds");
