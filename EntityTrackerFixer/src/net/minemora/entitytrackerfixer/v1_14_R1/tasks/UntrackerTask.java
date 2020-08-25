@@ -35,7 +35,7 @@ public class UntrackerTask extends BukkitRunnable {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "resource" })
 	@Override
 	public void run() {
 		if(MinecraftServer.getServer().recentTps[0] > ConfigMain.getMinTps()) {
