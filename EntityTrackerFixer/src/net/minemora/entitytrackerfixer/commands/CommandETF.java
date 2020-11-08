@@ -25,6 +25,7 @@ public class CommandETF implements CommandExecutor {
 		if (args[0].equalsIgnoreCase("reload")) {
 			EntityTrackerFixer.plugin.reload();
 			commandSender.sendMessage(ChatColor.GREEN + "The config has been reloaded sucessfully!");
+			return true;
 		}
 		commandSender.sendMessage(ChatColor.RED + "Invalid argument. Available: " + ChatColor.GOLD + "/etf reload" + ChatColor.RED + ".");
 		return true;
