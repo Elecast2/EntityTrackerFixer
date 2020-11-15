@@ -57,7 +57,7 @@ public class UntrackerTask extends BukkitRunnable {
         if (Bukkit.getWorld(worldName) == null) {
             return;
         }
-        //Set<net.minecraft.server.v1_14_R3.Entity> toRemove = new HashSet<>();
+        //Set<net.minecraft.server.v1_14_R2.Entity> toRemove = new HashSet<>();
         Set<Integer> toRemove = new HashSet<>();
         int removed = 0;
         WorldServer ws = ((CraftWorld) Bukkit.getWorld(worldName)).getHandle();
