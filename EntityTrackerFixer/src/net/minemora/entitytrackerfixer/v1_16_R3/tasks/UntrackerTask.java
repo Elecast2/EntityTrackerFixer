@@ -1,4 +1,4 @@
-package net.minemora.entitytrackerfixer.v1_16_R1.tasks;
+package net.minemora.entitytrackerfixer.v1_16_R3.tasks;
 
 import java.lang.reflect.Field;
 import java.util.HashSet;
@@ -6,21 +6,21 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import net.minecraft.server.v1_16_R1.ChunkProviderServer;
-import net.minecraft.server.v1_16_R1.EntityArmorStand;
-import net.minecraft.server.v1_16_R1.EntityComplexPart;
-import net.minecraft.server.v1_16_R1.EntityEnderDragon;
-import net.minecraft.server.v1_16_R1.EntityPlayer;
-import net.minecraft.server.v1_16_R1.MinecraftServer;
-import net.minecraft.server.v1_16_R1.WorldServer;
-import net.minecraft.server.v1_16_R1.PlayerChunkMap.EntityTracker;
+import net.minecraft.server.v1_16_R3.ChunkProviderServer;
+import net.minecraft.server.v1_16_R3.EntityArmorStand;
+import net.minecraft.server.v1_16_R3.EntityComplexPart;
+import net.minecraft.server.v1_16_R3.EntityEnderDragon;
+import net.minecraft.server.v1_16_R3.EntityPlayer;
+import net.minecraft.server.v1_16_R3.MinecraftServer;
+import net.minecraft.server.v1_16_R3.WorldServer;
+import net.minecraft.server.v1_16_R3.PlayerChunkMap.EntityTracker;
 import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 import net.minemora.entitytrackerfixer.config.ConfigMain;
 import net.minemora.entitytrackerfixer.util.ReflectionUtils;
-import net.minemora.entitytrackerfixer.v1_16_R1.entityTick.EntityTickManager;
+import net.minemora.entitytrackerfixer.v1_16_R3.entityTick.EntityTickManager;
 
 public class UntrackerTask extends BukkitRunnable {
 	
@@ -61,7 +61,7 @@ public class UntrackerTask extends BukkitRunnable {
 		if(Bukkit.getWorld(worldName) == null) {
 			return;
 		}
-		//Set<net.minecraft.server.v1_14_R1.Entity> toRemove = new HashSet<>();
+		//Set<net.minecraft.server.v1_14_R2.Entity> toRemove = new HashSet<>();
 		Set<Integer> toRemove = new HashSet<>();
 		int removed = 0;
 		WorldServer ws = ((CraftWorld)Bukkit.getWorld(worldName)).getHandle();
@@ -69,7 +69,7 @@ public class UntrackerTask extends BukkitRunnable {
 
 		try {
 	        for(EntityTracker et : cps.playerChunkMap.trackedEntities.values()) {
-	           net.minecraft.server.v1_16_R1.Entity nmsEnt = (net.minecraft.server.v1_16_R1.Entity) trackerField.get(et);
+	           net.minecraft.server.v1_16_R3.Entity nmsEnt = (net.minecraft.server.v1_16_R3.Entity) trackerField.get(et);
 	           if(nmsEnt instanceof EntityPlayer || nmsEnt instanceof EntityEnderDragon || nmsEnt instanceof EntityComplexPart) {
         		   continue;
         	   }

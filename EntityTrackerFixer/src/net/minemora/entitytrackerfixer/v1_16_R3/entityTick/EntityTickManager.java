@@ -1,15 +1,15 @@
-package net.minemora.entitytrackerfixer.v1_16_R2.entityTick;
+package net.minemora.entitytrackerfixer.v1_16_R3.entityTick;
 
 import java.util.Set;
 
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.ChunkLoadEvent;
 
-import net.minecraft.server.v1_16_R2.EntityInsentient;
-import net.minecraft.server.v1_16_R2.MinecraftServer;
+import net.minecraft.server.v1_16_R3.EntityInsentient;
+import net.minecraft.server.v1_16_R3.MinecraftServer;
 import net.minemora.entitytrackerfixer.EntityTrackerFixer;
 
 public class EntityTickManager implements Listener {
@@ -20,7 +20,7 @@ public class EntityTickManager implements Listener {
 		EntityTrackerFixer.plugin.getServer().getPluginManager().registerEvents(this, EntityTrackerFixer.plugin);
 	}
     
-    public void disableTicking(net.minecraft.server.v1_16_R2.Entity entity) {
+    public void disableTicking(net.minecraft.server.v1_16_R3.Entity entity) {
     	if(entity == null) {
 			return;
 		}
@@ -34,8 +34,8 @@ public class EntityTickManager implements Listener {
     	}
     }
     
-    public void enableTicking(Set<net.minecraft.server.v1_16_R2.Entity> entities) {
-    	for(net.minecraft.server.v1_16_R2.Entity entity : entities) {
+    public void enableTicking(Set<net.minecraft.server.v1_16_R3.Entity> entities) {
+    	for(net.minecraft.server.v1_16_R3.Entity entity : entities) {
     		if(entity == null) {
     			continue;
     		}
@@ -53,7 +53,7 @@ public class EntityTickManager implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
     	for(Entity entity : event.getChunk().getEntities()) {
-    		net.minecraft.server.v1_16_R2.Entity nms = ((CraftEntity)entity).getHandle();
+    		net.minecraft.server.v1_16_R3.Entity nms = ((CraftEntity)entity).getHandle();
     		if(nms instanceof EntityInsentient) {
     			if(!((EntityInsentient)nms).aware) {
     				((EntityInsentient)nms).aware = true;
