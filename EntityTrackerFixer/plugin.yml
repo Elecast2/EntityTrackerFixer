@@ -1,6 +1,6 @@
 name: EntityTrackerFixer
 main: net.minemora.entitytrackerfixer.EntityTrackerFixer
-version: 1.3.3
+version: 1.3.4 (Unofficial)
 softdepend: [Vault]
 api-version: 1.14
 author: Esmorall
@@ -8,7 +8,7 @@ description: Untrack entities that are not used at all by the server.
 commands:
   entitytrackerfixer:
     aliases: [etf]
-    description: Main Command of EntityTrackerFixer
+    description: Main command of EntityTrackerFixer.
     usage: /etf
 permissions:
   entitytrackerfixer.*:
