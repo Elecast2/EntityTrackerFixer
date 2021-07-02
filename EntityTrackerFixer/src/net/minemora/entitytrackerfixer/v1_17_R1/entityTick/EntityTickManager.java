@@ -53,7 +53,7 @@ public class EntityTickManager implements Listener {
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
     	for(Entity entity : event.getChunk().getEntities()) {
-    		net.minecraft.world.entity.Entity nms = ((CraftEntity)entity).getHandle();
+			net.minecraft.world.entity.Entity nms = ((CraftEntity)entity).getHandle();
     		if(nms instanceof EntityInsentient) {
     			if(!((EntityInsentient)nms).aware) {
     				((EntityInsentient)nms).aware = true;
